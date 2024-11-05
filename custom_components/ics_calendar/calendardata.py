@@ -18,6 +18,8 @@ from urllib.request import (
     urlopen,
 )
 
+from urllib.parse import quote
+
 from homeassistant.util.dt import now as hanow
 
 
@@ -219,7 +221,7 @@ class CalendarData:
 
     def _make_url(self):
         """Replace templates in url and encode."""
-        now = hanow()
-        return self.url.replace("{year}", f"{now.year:04}").replace(
-            "{month}", f"{now.month:02}"
-        )
+        now = hanow() 
+        url_filled = self.url.replace("{year}", f"{now.year:04}").replace("{month}", f"{now.month:02}")
+    # Encode the URL to ensure it only contains ASCII characters
+        return quote(url_filled, safe=':/?&=')
